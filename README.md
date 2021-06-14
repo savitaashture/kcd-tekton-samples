@@ -1,1 +1,85 @@
 # kcd-tekton-samples
+
+## Prerequisites:
+
+### minikube
+``` text
+minikube addons enable ingress
+minikube addons enable ingress-dns
+```
+### Kubernetes
+* Install and verify nginx.
+```text
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.45.0/deploy/static/provider/cloud/deploy.yaml
+```
+```text
+kubectl get pods -n ingress-nginx \
+  -l app.kubernetes.io/name=ingress-nginx --watch
+```
+
+## Tekton installation
+```text
+kubectl apply -f https://storage.googleapis.com/tekton-releases/operator/previous/v0.23.0-2/release.yaml
+```
+```text
+kubectl apply -f https://raw.githubusercontent.com/tektoncd/operator/v0.23.0-2/config/crs/kubernetes/config/all/operator_v1alpha1_config_cr.yaml
+```
+Check the status of Operator:
+```text
+kubectl get deploy -n tekton-operator
+```
+After installing dashboard, install the ingress:
+```text
+kubectl apply -f ingress/ingress.yaml
+```
+```text
+kubectl get ingress -n tekton-pipelines
+```
+
+## Example Demo
+#### Create Namespace
+```text
+kubectl create ns demo
+```
+
+### Manual Pipeline Creation
+#### Create secret
+```text
+kubectl -n demo create secret docker-registry demo-credentials --docker-server=quay.io --docker-username=savitaashture --docker-password=12_abcdefG
+```
+
+#### Create Tasks
+```text
+kubectl -n demo apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/openshift-client/0.1/openshift-client.yaml
+```
+```text
+kubectl -n demo apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/buildah/0.2/buildah.yaml
+```
+```text
+kubectl -n demo apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.4/git-clone.yaml
+```
+
+#### Create SA, Roles, Pipeline and PipelineRun
+```text
+kubectl -n demo create -f samples/
+```
+
+### Dynamic pipeline creation from GitHub events
+```text
+kubectl -n demo create -f samples/triggers/
+```
+
+### Create ingress route for EL
+```text
+kubectl -n demo create -f ingress/el-ingress.yaml
+```
+
+### Configure EL URL in GitHub webhook
+![Webhook Configuration](https://github.com/savitaashture/kcd-tekton-samples/blob/main/image/webhook.png)
+
+Create/reopen a PR for this repository.
+
+```text
+kubectl get taskruns | grep github-run-
+```
+to see the created TaskRun.

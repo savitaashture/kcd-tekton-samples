@@ -46,7 +46,7 @@ spec:
           workspace: shared-workspace
       runAfter:
         - fetch-repository
-    - name: create-deployment
+    - name: deploy
       taskRef:
         name: openshift-client
       params:
