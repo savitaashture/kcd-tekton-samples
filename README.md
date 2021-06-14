@@ -37,6 +37,10 @@ kubectl get ingress -n tekton-pipelines
 ```
 
 ## Example Demo
+#### Clone the code
+```text
+git clone https://github.com/savitaashture/kcd-tekton-samples/
+```
 #### Create Namespace
 ```text
 kubectl create ns demo
@@ -63,23 +67,23 @@ kubectl -n demo apply -f https://raw.githubusercontent.com/tektoncd/catalog/main
 ```text
 kubectl -n demo create -f samples/
 ```
+### Dynamic pipelinerun creation based on events
 
-### Dynamic pipeline creation from GitHub events
 ```text
 kubectl -n demo create -f samples/triggers/
 ```
 
-### Create ingress route for EL
+#### Create ingress route for EL
 ```text
 kubectl -n demo create -f ingress/el-ingress.yaml
 ```
 
-### Get ingress URL and configure in webhook
+#### Get ingress URL and configure in webhook
 ```text
 kubectl get ing -n demo
 ```
 
-### Configure EL URL in GitHub webhook
+#### Configure EL URL in GitHub webhook
 ![Webhook Configuration](https://github.com/savitaashture/kcd-tekton-samples/blob/main/image/webhook.png)
 
 Create/reopen a PR for this repository.
