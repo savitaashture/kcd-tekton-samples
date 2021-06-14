@@ -30,7 +30,7 @@ kubectl get deploy -n tekton-operator
 ```
 After installing dashboard, install the ingress:
 ```text
-kubectl apply -f ingress/ingress.yaml
+kubectl apply -f ingress/dashboard-ingress.yaml
 ```
 ```text
 kubectl get ingress -n tekton-pipelines
@@ -45,7 +45,7 @@ kubectl create ns demo
 ### Manual Pipeline Creation
 #### Create secret
 ```text
-kubectl -n demo create secret docker-registry demo-credentials --docker-server=quay.io --docker-username=savitaashture --docker-password=12_abcdefG
+kubectl -n demo create secret docker-registry demo-credentials --docker-server=quay.io --docker-username=savitaashture --docker-password=<password>
 ```
 
 #### Create Tasks
@@ -74,12 +74,17 @@ kubectl -n demo create -f samples/triggers/
 kubectl -n demo create -f ingress/el-ingress.yaml
 ```
 
+### Get ingress URL and configure in webhook
+```text
+kubectl get ing -n demo
+```
+
 ### Configure EL URL in GitHub webhook
 ![Webhook Configuration](https://github.com/savitaashture/kcd-tekton-samples/blob/main/image/webhook.png)
 
 Create/reopen a PR for this repository.
 
 ```text
-kubectl get taskruns | grep github-run-
+kubectl -n demo get pipelinerun | grep build-deploy-api-pipelinerun-
 ```
-to see the created TaskRun.
+to see the created PipelineRun.
