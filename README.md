@@ -1,4 +1,4 @@
-# kcd-tekton-sampless
+# kcd-tekton-samples
 
 ## Prerequisites:
 
