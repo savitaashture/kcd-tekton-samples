@@ -3,7 +3,7 @@ kind: ServiceAccount
 metadata:
   name: cred
 secrets:
-- name: default-token-w6ztt
+- name: default-token-b4hl6
 - name: demo-credentials
 imagePullSecrets:
 - name: demo-credentials
