@@ -45,7 +45,7 @@ spec:
         - name: source
           workspace: shared-workspace
       runAfter:
-        - fetch-repository
+        - fetch
     - name: deploy
       taskRef:
         name: openshift-client
@@ -57,4 +57,4 @@ spec:
           - "$(params.deployment-name)"
           - "--image=$(params.IMAGE)"
       runAfter:
-        - build-image
+        - build
